@@ -1,0 +1,8 @@
+Package: forma-test
+Version: 1.0
+Section: misc
+Priority: optional
+Architecture: amd64
+Maintainer: soup1023
+Description: Dummy package for Forma repository testing.
+ This package does nothing.
