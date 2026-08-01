@@ -1,0 +1,15 @@
+Package: forma-test
+Architecture: amd64
+Version: 1.0
+Priority: optional
+Section: misc
+Maintainer: soup1023
+Filename: pool/main/forma-test.deb
+Size: 832
+MD5sum: 1e36f7f5b23d25ab8add6bcf68a9bb19
+SHA1: 8db894be90d67d736e288674c4609591345dfb52
+SHA256: 514018f184360a544b41f722d4c04cbacee06f3d411e7226edfcab6b2c38df7a
+SHA512: 8acce7eed99419d7fe14f7edc027f4fa9ddb9db93b8540e3156bd3f14c659f5dd903e3af980833b2fc955085dbfc2d0bd7d9c17c47fcd10cf8bdac37db36ee5e
+Description: Dummy package for Forma repository testing.
+ This package does nothing.
+
