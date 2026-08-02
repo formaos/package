@@ -1,9 +1,11 @@
 name: Generate Directory Index
-
 on:
   push:
     branches:
-      - main  # または master
+      - main
+
+permissions:
+  contents: write   # ← これを追加
 
 jobs:
   build:
@@ -11,48 +13,31 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Install dir2html or tree
+      - name: Generate index.html for each directory
         run: |
-          # Pythonで各ディレクトリに index.html を自動生成するスクリプト例
           python3 -c '
           import os, html
-          from datetime import datetime
-
           for root, dirs, files in os.walk("."):
               if ".git" in root or ".github" in root:
                   continue
-              
               filepath = os.path.join(root, "index.html")
               rel_path = os.path.relpath(root, ".")
               title = "Index of /" + ("" if rel_path == "." else rel_path)
-
               items = []
               if rel_path != ".":
                   items.append("<li><a href=\"../\">../</a></li>")
-
               for d in sorted(dirs):
                   if not d.startswith("."):
                       items.append(f"<li><a href=\"{d}/\">{d}/</a></li>")
               for f in sorted(files):
                   if f != "index.html" and not f.startswith("."):
                       items.append(f"<li><a href=\"{f}\">{f}</a></li>")
-
-              content = f"""<!DOCTYPE html>
-              <html>
-              <head><meta charset="UTF-8"><title>{html.escape(title)}</title></head>
-              <body>
-              <h1>{html.escape(title)}</h1>
-              <hr><pre><ul>{"".join(items)}</ul></pre><hr>
-              </body>
-              </html>"""
-
+              html_out = "<!DOCTYPE html>\n<html>\n<head><meta charset=\"UTF-8\"><title>" + html.escape(title) + "</title></head>\n<body>\n<h1>" + html.escape(title) + "</h1>\n<hr><ul>" + "".join(items) + "</ul><hr>\n</body>\n</html>"
               with open(filepath, "w", encoding="utf-8") as out:
-                  out.write(content)
+                  out.write(html_out)
           '
-
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
